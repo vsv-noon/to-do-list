@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My To Do List</title>    
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <form id="form">
+          <div class="form-group">
+            <input id="taskInput" type="text" placeholder="Enter new task..." />
+            <button type="submit" id="AddBtn">Add</button>
+          </div>
+        </form>
+      </header>
+      <div class="container">
+        <!-- Uncompleted tasks-->
+        <ul id="tasksList" class="list-group list-group-flush"></ul>
+
+        <!-- Completed tasks-->
+        <ul class="todo" id="completed"></ul>
+      </div>
+    </div>
+    <script src="./js/script.js"></script>
+  </body>
+</html>
