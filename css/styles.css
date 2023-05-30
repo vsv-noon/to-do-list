@@ -1,214 +1,260 @@
+@charset "UTF-8";
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    list-style: none;
 }
 
-html, body {
-    width: 100%;
-    
-    /* min-width: 250px;
-    min-height: 100vh; */
+body {
+  background: #edf0f1;
+  /* padding: 80px 0 0 0; */
 }
 
-body {    
-    background-color: #E4E5E7;
-    /* padding-top: 80px; */
-    /* display: flex;
-    flex-direction: column;
-    justify-content: space-between; */
+body,
+input,
+button {
+  font-family: "Roboto", sans-serif;
 }
 
 .wrapper {
-    margin: 0 auto;
-    width: 60%;
-    box-shadow: 0px 2px 4px rgba(44, 62, 80, 0.15);
-}
-
-/* Style the header */
-header {    
-    width: 100%;
-    height: 80px;
-    /* position: fixed;     */
-    margin: 15px auto;
-    padding: 15px;
-    top: 0;
-    left: 0;
-    z-index: 5;
+    display: flex;
+    max-width: 50%;
+    margin: 0 auto;    
     border-radius: 5px;
-    background: sandybrown;
     box-shadow: 0px 2px 4px rgba(44, 62, 80, 0.15);
-    text-align: center;
 }
 
-/* Clear float after the header */
-.header::after {
-    content: '';
-    display: table;
-    clear: both;
+.noFill {
+  fill: none;
 }
 
-/* Style the input */
+header {
+  width: 50%;
+  height: 80px;
+  position: fixed;
+  padding: 15px;
+  top: 0;  
+  z-index: 5;
+  background: #25b99a;
+  box-shadow: 0px 2px 4px rgba(44, 62, 80, 0.15);
+  border-radius: 5px;
+}
+
 header input {
-    width: 90%;
-    height: 50px;
-    border: none;
-    /* color: #fff; */
-    /* background: rgba(255, 255, 255, 0.2); */
-    border-radius: 5px;
-    padding: 10px;
-    float: center;
-    font-size: 16px;
-    font-weight: 400;
-    text-indent: 18px;
-    box-shadow: none;
-    outline: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;  
+  width: 100%;
+  height: 50px;
+  float: left;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 400;
+  text-indent: 18px;
+  padding: 0 60px 0 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px 25px 25px 5px;
+  border: 0px;
+  box-shadow: none;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-/* Style the "Add" buttnon */
+header input::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+header input:-moz-input-placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+header input::-moz-input-placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+header input:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+
 header button {
-    width: 50px;
-    height: 50px;
-    margin-left: 15px;
-    top: 5px;
-    right: 15px;
-    border-radius: 25px;
-    color: #555;
-    font-size: 18px;
-    font-weight: 600;
-    background: #fff;
-    border: none;
-    float: center;
-    box-shadow: none;
-    outline: none;
-    cursor: pointer;
-    transition: 0.3s;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 2;
+  border-radius: 5px;
+  background: #fff;
+  /* border: 0; */
+  border-color: #fff;
+  box-shadow: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-header button:hover {
-    background-color: #bbb;
+header button svg {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -8px 0 0 -8px;
 }
 
-/* Style the list item */
-ul li {
-    cursor: pointer;
-    position: relative;
-    /* padding: 12px 8px 12px 40px; */
-    padding: 0;
-    text-indent: 40px;
-    list-style-type: none;
-    background: #eee;
-    font-size: 18px;
-    transition: 0.2s;    
+header button svg .fill {
+  fill: #25b99a;
 }
 
-/* Make the list item unselecteble */
-ul li {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
+.container {
+  width: 100%;
+  float: left;
+  padding: 90px 15px 15px;
 }
 
-/* Set all odd list items to a different color (zebra-stripes) */
-ul li:nth-child(odd) {
-    background: #f9f9f9;
+ul.todo {
+  width: 100%;
+  float: left;
 }
 
-/* Darker background-color on hover */
-ul li:hover {
-    background: #ddd;
+ul.todo li {
+  width: 100%;
+  min-height: 50px;
+  float: left;
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+  line-height: 22px;
+  background: #fff;
+  border-radius: 5px;
+  position: relative;
+  box-shadow: 0px 1px 2px rgba(44, 62, 80, 0.1);
+  margin: 0 0 10px 0;
+  padding: 14px 100px 14px 14px;
+  word-break: break-word;
 }
 
-.d-flex {
-    display: flex;
-    justify-content: space-between;
+ul.todo li:last-of-type {
+  margin: 0;
 }
 
-.task-title {
-    font-weight: 400;
-    padding-top: 5px;
+ul.todo li .buttons {
+  width: 100px;
+  height: 50px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
-.task-title--done {
-    background: #888;
-    color: #fff;
-    text-decoration: line-through;    
+ul.todo li .buttons button {
+  width: 50px;
+  height: 50px;
+  float: left;
+  background: none;
+  position: relative;
+  border: 0px;
+  box-shadow: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-.task-title--done::before {
-    content: '';
-    position: absolute;
-    border-color: #fff;
-    border-style: solid;
-    border-width: 0 2px 2px 0;
-    top: 5px;
-    left: 16px;
-    height: 15px;
-    width: 7px;
-    transform: rotate(45deg);
+ul.todo li .buttons button:last-of-type::before {
+  content: '';
+  width: 1px;
+  height: 30px;
+  background: #edf0f1;
+  position: absolute;
+  top: 10px;
+  left: 0;
 }
 
-.task-item__buttons {
-    display: flex;
-    column-gap: 5px;
+ul.todo li .buttons button svg {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -11px 0 0 -11px;
 }
 
-.empty-list {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-top: 1em;
-    padding-bottom: 1em;
+ul.todo li .buttons button.complete svg {
+  border-radius: 11px;
+  border: 1.5px solid #25b99a;
+  transition: background 0.2s ease;
 }
 
-.empty-list__title {
-    font-size: 20px;
-    margin-bottom: 15px;
-    font-weight: 300;
-} */
-
-.empty-list__icon {
-    color: #42BE2A;
-    font-size: 32px;
+ul.todo#completed li {
+    text-decoration: line-through;
 }
 
-.btn-action {
-    background-color: #e0e5ea;
-    padding: 8px 10px;
-    cursor: pointer;
-    border: 0;
-    border-radius: 4px;
-    transition: opacity 0.2s ease-in;
-    opacity: 0.5;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+ul.todo#completed li .buttons button.complete svg {
+  background: #25b99a;
+  border: 0px;
 }
 
-.btn-action:hover {
-    background-color: #e0e5ea;
-    opacity: 1;
+ul.todo:not(#completed) li .buttons button.complete:hover svg {
+  background: rgba(37, 185, 154, 0.75);
 }
 
-.btn-action img {
-    pointer-events: none;
+ul.todo:not(#completed) li .buttons button.complete:hover svg .fill {
+  fill: #fff;
 }
 
-span {
-    margin: 0;
-    padding: 0;
-    width: 100%;
+ul.todo#completed li .buttons button.complete svg .fill {
+  fill: #fff;
 }
 
-.none {
-    display: none !important;
+ul.todo li .buttons button svg .fill {
+  transition: fill 0.2s ease;
 }
 
+ul.todo li .buttons button.remove svg .fill {
+  fill: #c0cecb;
+}
+
+ul.todo li .buttons button.remove:hover svg .fill {
+  fill: #e85656;
+}
+
+ul.todo li .buttons button.complete svg .fill {
+  fill: #25b99a;
+}
+
+ul.todo#completed {
+  position: relative;
+  padding: 60px 0 0 0;
+}
+
+ul.todo#completed::before {
+  content: '';
+  width: 150px;
+  height: 1px;
+  background: #d8e5e0;
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  margin: 0 0 0 -75px;
+}
+
+ul.todo#todo:empty::after {
+  content: "You have nothing to-do!";
+  margin: 15px 0 0 0;
+}
+
+ul.todo#completed:empty::after {
+  content: "You have yet to complete any tasks.";
+}
+
+ul.todo#todo::after,
+ul.todo#completed::after {
+  width: 100%;
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  color: #aaa;
+}

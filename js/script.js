@@ -1,152 +1,113 @@
-// Find elements on the page
-const form = document.querySelector("#form");
-const taskInput = document.querySelector("#taskInput");
-const tasksList = document.querySelector("#tasksList");
-const emptyList = document.querySelector("#emptyList");
+const form = document.getElementById('form');
 
-let tasks = [];
+const inputValue = document.getElementById('item');
 
-if (localStorage.getItem("tasks")) {
-  tasks = JSON.parse(localStorage.getItem("tasks"));
-  tasks.forEach((task) => renderTask(task));
-}
+const data = (localStorage.getItem('todoList')) ? JSON.parse(localStorage.getItem('todoList')) 
+: {todo: [], completed: []};
 
-checkEmptyList();
+// Remove and complete icons in SVG format
+const removeSVG = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve"><rect class="noFill" width="22" height="22"/><g><g><path class="fill" d="M16.1,3.6h-1.9V3.3c0-1.3-1-2.3-2.3-2.3h-1.7C8.9,1,7.8,2,7.8,3.3v0.2H5.9c-1.3,0-2.3,1-2.3,2.3v1.3c0,0.5,0.4,0.9,0.9,1v10.5c0,1.3,1,2.3,2.3,2.3h8.5c1.3,0,2.3-1,2.3-2.3V8.2c0.5-0.1,0.9-0.5,0.9-1V5.9C18.4,4.6,17.4,3.6,16.1,3.6z M9.1,3.3c0-0.6,0.5-1.1,1.1-1.1h1.7c0.6,0,1.1,0.5,1.1,1.1v0.2H9.1V3.3z M16.3,18.7c0,0.6-0.5,1.1-1.1,1.1H6.7c-0.6,0-1.1-0.5-1.1-1.1V8.2h10.6V18.7z M17.2,7H4.8V5.9c0-0.6,0.5-1.1,1.1-1.1h10.2c0.6,0,1.1,0.5,1.1,1.1V7z"/></g><g><g><path class="fill" d="M11,18c-0.4,0-0.6-0.3-0.6-0.6v-6.8c0-0.4,0.3-0.6,0.6-0.6s0.6,0.3,0.6,0.6v6.8C11.6,17.7,11.4,18,11,18z"/></g><g><path class="fill" d="M8,18c-0.4,0-0.6-0.3-0.6-0.6v-6.8c0-0.4,0.3-0.6,0.6-0.6c0.4,0,0.6,0.3,0.6,0.6v6.8C8.7,17.7,8.4,18,8,18z"/></g><g><path class="fill" d="M14,18c-0.4,0-0.6-0.3-0.6-0.6v-6.8c0-0.4,0.3-0.6,0.6-0.6c0.4,0,0.6,0.3,0.6,0.6v6.8C14.6,17.7,14.3,18,14,18z"/></g></g></g></svg>';
+const completeSVG = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve"><rect y="0" class="noFill" width="22" height="22"/><g><path class="fill" d="M9.7,14.4L9.7,14.4c-0.2,0-0.4-0.1-0.5-0.2l-2.7-2.7c-0.3-0.3-0.3-0.8,0-1.1s0.8-0.3,1.1,0l2.1,2.1l4.8-4.8c0.3-0.3,0.8-0.3,1.1,0s0.3,0.8,0,1.1l-5.3,5.3C10.1,14.3,9.9,14.4,9.7,14.4z"/></g></svg>';
 
-// Add a task
-form.addEventListener("submit", addTask);
+renderTodoList();
 
-// Delete a task
-tasksList.addEventListener("click", deleteTask);
+// User clicked on the add button
+// If there is any text inside the item field, add that text to the todo list
 
-// Complete a task
-tasksList.addEventListener("click", doneTask);
+form.addEventListener('submit', addItem);
 
-function addTask(event) {
-  // prevent the page from reloading when submitting the form
+function addItem(event) {
   event.preventDefault();
-
-  // get text from input
-  const taskText = taskInput.value;
-
-  // make a todo object
-  const newTask = {
-    id: Date.now(),
-    text: taskText,
-    done: false,
-  };
-
-  // add task to tasks array
-  tasks.push(newTask);
-
-  // then store it in localStorage
-  saveToLocalStorage();
-
-  renderTask(newTask);
-
-  // finally clear the input box value and return focus on it
-  taskInput.value = "";
-  taskInput.focus();
-
-  checkEmptyList();
+    addItemToDOM(inputValue.value);    
+    data.todo.push(inputValue.value);
+    dataObjectUpdated();
+    document.getElementById('item').value = '';
 }
 
-function deleteTask(event) {
-  // Check if that is not a Delete button
-  if (event.target.dataset.action !== "delete") return;
+function renderTodoList() {
+    if(!data.todo.length && !data.completed.length) return;
 
-  const parentNode = event.target.closest(".list-group-item");
-
-  // Check task ID
-  const id = Number(parentNode.id);
-
-  // Delete task
-  tasks = tasks.filter((task) => task.id !== id);
-
-  // store it in LocalStorage
-  saveToLocalStorage();
-
-  parentNode.remove();
-
-  checkEmptyList();
-}
-
-function doneTask(event) {
-  // Check if that is not a Complete button
-  if (event.target.dataset.action !== "done") return;
-
-  const parentNode = event.target.closest(".list-group-item");
-
-  // Check task ID
-  const id = Number(parentNode.id);
-
-  // const task = tasks.find((task) => task.id === id)
-
-  const task = tasks.find(function (task) {
-    if (task.id === id) {
-      return true;
+    for (let i = 0; i < data.todo.length; i++) {
+        let value = data.todo[i];
+        addItemToDOM(value);
     }
-  });
 
-  task.done = !task.done;
-
-  // Store this to LocalStorage
-  saveToLocalStorage();
-
-  const taskTitle = parentNode.querySelector(".task-title");
-  taskTitle.classList.toggle("task-title--done");
-  // }
-
-  // saveHTMLtoLocalStorage();
+    for (let i = 0; i < data.completed.length; i++) {
+        let value = data.completed[i];
+        addItemToDOM(value, true);
+    }
 }
 
-function checkEmptyList() {
-  if (tasks.length === 0) {
-    const emptyListHTML = `<li id="emptyList" class="list-group-item empty-list">
-    <img src="./img/leaf.svg" alt="Empty" width="48" class="mt-3" />
-    <div class="empty-list__title">Список дел пуст</div>
-  </li>`;
-    tasksList.insertAdjacentHTML("afterbegin", emptyListHTML);
-  }
-
-  if (tasks.length > 0) {
-    const emptyListEl = document.querySelector("#emptyList");
-    emptyListEl ? emptyListEl.remove() : null;
-  }
+function dataObjectUpdated() {
+    localStorage.setItem('todoList', JSON.stringify(data));
 }
 
-// function to save tasks to localStorage
-function saveToLocalStorage() {
-  // convert the array to string then store it
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-  // render them to screen
-  // renderTask(task);
+function removeItem() {
+    let item = this.parentNode.parentNode;
+    let parent = item.parentNode;
+    let id = parent.id;
+    let value = item.innerText;
+
+    if (id === 'todo') {
+        data.todo.splice(data.todo.indexOf(value), 1);
+    } else {
+        data.completed.splice(data.completed.indexOf(value), 1);
+    }
+    dataObjectUpdated();
+
+    parent.removeChild(item);
 }
 
-// function to render given task to screen
-function renderTask(task) {
-  // Create CSS
-  const cssClass = task.done ? "task-title task-title--done" : "task-title";
+function completeItem() {
+    let item = this.parentNode.parentNode;
+    let parent = item.parentNode;
+    let id = parent.id;
+    let value = item.innerText;
 
-  // make a <li> element and fill it
-  const taskHTML = `
-  <li id="${task.id}" class="list-group-item d-flex">
-          <span class="${cssClass}">${task.text}</span>
-          <div class="task-item__buttons">
-            <button type="button" data-action="done" class="btn-action">
-              <img src="./img/tick.svg" alt="Done" width="18" height="18" />
-            </button>
-            <button type="button" data-action="delete" class="btn-action">
-              <img
-                src="./img/cross.svg"
-                alt="Delete"
-                width="18"
-                height="18"
-              />
-            </button>
-          </div>
-        </li>`;
+    if (id === 'todo') {
+        data.todo.splice(data.todo.indexOf(value), 1);
+        data.completed.push(value);
+    } else {
+        data.completed.splice(data.completed.indexOf(value), 1);
+        data.todo.push(value);
+    }
+    dataObjectUpdated();
 
-  //  Add a task on the page
-  tasksList.insertAdjacentHTML("afterbegin", taskHTML);
+    // Check if the item should be added to the completed list or to re-added to the todo list
+    const target = (id === 'todo') ? document.getElementById('completed') : document.getElementById('todo');
+
+    parent.removeChild(item);
+    target.insertBefore(item, target.childNodes[0]);
+}
+
+// Adds a new item to the todo list
+function addItemToDOM(text, completed) {
+    let list = (completed) ? document.getElementById('completed') : document.getElementById('todo');
+
+    let item = document.createElement('li');
+    item.innerText = text;
+
+    let buttons = document.createElement('div');
+    buttons.classList.add('buttons');
+
+    let remove = document.createElement('button');
+    remove.classList.add('remove');
+    remove.innerHTML = removeSVG;
+
+    // Add click event for removing the item
+    remove.addEventListener('click', removeItem);
+
+    let complete = document.createElement('button');
+    complete.classList.add('complete');
+    complete.innerHTML = completeSVG;
+
+    // Add click event for completing the item
+    complete.addEventListener('click', completeItem);
+
+    buttons.appendChild(remove);
+    buttons.appendChild(complete);
+    item.appendChild(buttons);
+
+    list.insertBefore(item, list.childNodes[0]);
+    // list.appendChild(item);
 }
