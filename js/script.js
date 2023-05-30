@@ -21,7 +21,8 @@ function addItem(event) {
     addItemToDOM(inputValue.value);    
     data.todo.push(inputValue.value);
     dataObjectUpdated();
-    document.getElementById('item').value = '';
+    inputValue.value = '';
+    inputValue.focus();
 }
 
 function renderTodoList() {
