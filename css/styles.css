@@ -20,6 +20,7 @@ button {
 .wrapper {
     display: flex;
     max-width: 50%;
+    min-width: 250px;
     margin: 0 auto;    
     border-radius: 5px;
     box-shadow: 0px 2px 4px rgba(44, 62, 80, 0.15);
@@ -31,12 +32,13 @@ button {
 
 header {
   width: 50%;
+  min-width: 250px;
   height: 80px;
   position: fixed;
   padding: 15px;
   top: 0;  
   z-index: 5;
-  background: #25b99a;
+  background: #bbb9b9;
   box-shadow: 0px 2px 4px rgba(44, 62, 80, 0.15);
   border-radius: 5px;
 }
@@ -45,12 +47,12 @@ header input {
   width: 100%;
   height: 50px;
   float: left;
-  color: #fff;
+  color: black;
   font-size: 15px;
   font-weight: 400;
   text-indent: 18px;
   padding: 0 60px 0 0;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 5px 25px 25px 5px;
   border: 0px;
   box-shadow: none;
@@ -60,7 +62,7 @@ header input {
   appearance: none;
 }
 
-header input::-webkit-input-placeholder {
+/* header input::-webkit-input-placeholder {
   color: rgba(255, 255, 255, 0.75);
 }
 
@@ -74,7 +76,7 @@ header input::-moz-input-placeholder {
 
 header input:-ms-input-placeholder {
   color: rgba(255, 255, 255, 0.75);
-}
+} */
 
 header button {
   width: 50px;
